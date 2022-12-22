@@ -1,0 +1,611 @@
+\documentclass[11pts,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{calc}
+\usepackage[a4paper,noheadfoot]{geometry}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tikzpagenodes}
+\usetikzlibrary{positioning}
+\usepackage[overlay,absolute]{textpos}
+\usepackage{textcase}
+\usepackage{graphicx}
+\usepackage{picture} 
+\usepackage{fontawesome5}
+
+\usepackage{hyperref}
+\hypersetup{
+    hidelinks = true,
+}
+
+%--------------------- Miscellaneous settings
+
+\pagenumbering{gobble}
+%\setlength{\parindent}{0mm}
+%\setlength{\parskip}{5mm}
+\textblockorigin{-5mm}{0mm}   %% Default origin top left corner and it can be changed in this line
+
+%--------------------- /Miscellaneous settings
+
+%--------------------- Define color
+
+\newcommand{\mainBackgroundColor}{072e6d}
+\newcommand{\secondBackgroundColor}{FaFaFa}
+\newcommand{\mainTextColor}{000000}
+\newcommand{\secondTextColor}{FaFaFa}
+
+\definecolor{blockNameBackground}{HTML}{\mainBackgroundColor}
+\definecolor{blockNameText}{HTML}{\secondTextColor}
+\definecolor{blockHeaderBackground}{HTML}{\mainBackgroundColor}
+\definecolor{blockHeaderText}{HTML}{\secondTextColor}
+\definecolor{blockTitleBackground}{HTML}{\secondBackgroundColor}
+\definecolor{blockTitleText}{HTML}{\mainTextColor}
+\definecolor{blockSideBarBackground}{HTML}{\mainBackgroundColor}
+\definecolor{blockSideBarText}{HTML}{\secondTextColor}
+\definecolor{blockRuleBackground}{HTML}{\secondBackgroundColor}
+\definecolor{blockDateText}{HTML}{\mainTextColor}
+\definecolor{blockContentText}{HTML}{\mainTextColor}
+\definecolor{blockMainText}{HTML}{f5f5f5}
+\definecolor{starIconFull}{HTML}{\mainBackgroundColor}
+\definecolor{starIconEmpty}{HTML}{\secondTextColor}
+\definecolor{starBackground}{HTML}{\thirdBackgroundColor}
+
+%--------------------- /Define color
+
+%--------------------- Define Font size
+
+\newcommand{\blockNameFontSize}[1]{\LARGE{#1}}
+\newcommand{\blockHeaderFontSize}[1]{\LARGE{#1}}
+\newcommand{\blockSideBarFontSizeText}[1]{\normalsize{#1}}
+\newcommand{\blockSideBarFontSizeTitle}[1]{\Large{#1}}
+\newcommand{\blockTitleFontSize}[1]{\Large{#1}}
+\newcommand{\blockDateFontSize}[1]{\Large{#1}}
+\newcommand{\blockContentFontSize}[1]{\normalsize{#1}}
+
+%--------------------- /Define Font size
+
+%--------------------- Define lengths
+
+\setlength{\paperwidth}{210mm}
+\setlength{\paperheight}{297mm}
+
+%--------------------- /Define lengths
+
+%--------------------- Origin Coordinates
+
+\newcommand{\blockNameOrigin}{\sideMargin,-\sideMargin}
+\newcommand{\blockHeaderOrigin}{\sideMargin+\blockNameWidth,-\sideMargin}
+\newcommand{\blockPictureOrigin}{\sideMargin+\blockNameWidth+\blockHeaderWidth, -\sideMargin}
+\newcommand{\blockSideBarOrigin}{\sideMargin, -\sideMargin-\blockNameHeight}
+\newcommand{\blockTitleOrigin}[1]{\sideMargin+\blockSideBarWidth,-\sideMargin-\blockNameHeight-#1}
+
+%--------------------- /Origin Coordinates
+
+%--------------------- Define Width
+
+\newcommand{\sideMargin}{0.02\paperwidth}
+\newcommand{\blockNameWidth}{\paperwidth/4}
+\newcommand{\blockSideBarWidth}{\blockNameWidth}
+\newcommand{\blockPictureWidth}{0.15\paperwidth}
+\newcommand{\blockHeaderWidth}{\paperwidth-\blockPictureWidth-\sideMargin}
+\newcommand{\blockTitleWidth}{\blockHeaderWidth+\blockPictureWidth}
+\newcommand{\blockDateWidth}{0.1\blockTitleWidth}
+\newcommand{\blockContentWidth}{0.625\blockTitleWidth}
+
+%--------------------- /Define Width
+
+%--------------------- Define Height
+
+\newcommand{\blockNameHeight}{0.15\paperwidth}
+\newcommand{\blockSideBarHeight}{\paperheight+\sideMargin}
+\newcommand{\blockTitleHeight}{15mm}
+
+%--------------------- /Define Height
+
+%--------------------- Define and format block
+
+% With an origin of (0,0) in the left corner, the height y is -29.7 y(0,-29.7) and the length x is 21 (0,21).
+%\tikzset{shift={(-3.7,3.9)}} Set the origin to 0,0 for the actuel environment.
+
+% --------- blockNAME
+
+\newcommand{\placeblockName}{
+\begin{tikzpicture}[remember picture,overlay]
+\tikzset{shift={(-3.7,3.9)}}
+\path [fill=blockNameBackground] (\blockNameOrigin) rectangle (\blockNameWidth,-\blockNameHeight);
+\end{tikzpicture}}
+
+% --------- /blockNAME
+
+% --------- blockHEADER
+
+\newcommand{\placeblockHeader}{
+\begin{tikzpicture}[remember picture,overlay]
+\tikzset{shift={(-3.7,3.9)}}
+\path [fill=blockHeaderBackground] (\blockHeaderOrigin) rectangle (\blockHeaderWidth,-\blockNameHeight);
+\end{tikzpicture}}
+
+% --------- /blockHEADER
+
+
+% --------- blockPICTURE
+
+\newcommand{\placeblockPicture}[1]{
+\node[anchor=north west, %anchor is upper left corner of the graphic
+      xshift=\blockHeaderWidth, %shifting around
+      yshift=-\sideMargin] 
+     at (current page.north west) %left upper corner of the page
+     {\includegraphics[width=25mm, height=25mm]{#1}};}
+     
+% --------- /blockPICTURE
+
+% -------------------- blockSIDEBAR
+
+\newcommand{\placeblockSideBar}{
+\begin{tikzpicture}[remember picture,overlay]
+\tikzset{shift={(-3.7,3.9)}}
+\path [fill=blockSideBarBackground] (\blockSideBarOrigin) rectangle (\blockSideBarWidth,-\blockSideBarHeight);
+\end{tikzpicture}}
+
+% -------------------- /blockSIDEBAR
+
+% -------------------- blockMAIN
+
+\newcommand{\placeblockMain}{
+\begin{tikzpicture}[remember picture,overlay]
+\tikzset{shift={(-3.7,3.9)}}
+\path [fill=blockMainText] (\blockTitleOrigin{0mm}) rectangle (\blockTitleWidth,-109mm-\blockNameHeight-\blockTitleHeight);
+\end{tikzpicture}}
+
+% -------------------- /blockMAIN
+
+% --------- blockVERTICALRULE
+
+\newcommand{\placeVerticalRule}[4]{
+\begin{tikzpicture}[remember picture,overlay]
+    \tikzset{shift={(-3.7,3.9)}}
+    \path [fill=blockRuleBackground] (#1,#2) rectangle (#3,#4);
+\end{tikzpicture}}
+
+% --------- /blockVERTICALRULE
+
+% --------- blockTITLE
+
+\newcommand{\placeblockTitle}[1]{
+\begin{tikzpicture}[remember picture,overlay]
+    \tikzset{shift={(-3.7,3.9)}}
+    \path [fill=blockTitleBackground] (\blockTitleOrigin{#1}) rectangle (\blockTitleWidth,-#1-\blockNameHeight-\blockTitleHeight);
+\end{tikzpicture}}
+
+% --------- /blockTITLE
+
+% -------- startBackground
+\newcommand{\placestarBackground}[4]{
+\begin{tikzpicture}[remember picture,overlay]
+    \tikzset{shift={(-3.7,3.9)}}
+    \path [fill=#1] (62mm,-#2) rectangle (90mm,-#2-5mm);
+    \path [fill=#1] (62mm,-#3) rectangle (90mm,-#3-5mm);
+    \path [fill=#1] (62mm,-#4) rectangle (90mm,-#4-5mm);
+\end{tikzpicture}}
+
+% -------- /startBackground
+
+%--------------------- /Define and format block
+
+%--------------------- Define, formatting Icon
+
+\newcommand{\icon}[3]{\makebox(#2, #2){\textcolor{#3}{%\csname 
+#1%\endcsname
+}}}	%icon shortcut
+
+\newcommand{\icontext}[4]{ 						%icon with text shortcut
+	\vcenteredhbox{\icon{#1}{#2}{#4}} \textcolor{#4}{\blockSideBarFontSizeText{#3}}}
+
+\newcommand*{\vcenteredhbox}[1]{\begingroup
+\setbox0=\hbox{#1}\parbox{\wd0}{\box0}\endgroup}
+
+%--------------------- /Define, formatting Icon
+
+% 
+\newcommand{\fiveStarBar}[5]{
+\icon{\faStar}{12}{#1}
+\icon{\faStar}{12}{#2}
+\icon{\faStar}{12}{#3}
+\icon{\faStar}{12}{#4}
+\icon{\faStar}{12}{#5}
+}
+
+%--------------------- Define, formatting blockText
+
+% --------- blockNAME Text
+
+\newcommand\PlaceTextBlockName[6]{
+\begin{textblock*}{\blockNameWidth}(#1,#2) %% change width of box 
+\begin{center}
+\textcolor{blockNameText}{\textbf{\blockNameFontSize{#3}\\\vspace{10pt}\blockNameFontSize{#4}}}\\
+\vspace{10pt}\textcolor{blockNameText}{\blockSideBarFontSizeText{#5,\hspace{4pt}}\blockSideBarFontSizeText{#6 ans}}\\
+\end{center}
+\end{textblock*}}
+
+% --------- /blockNAME Text
+
+% --------- blockHEADER Text
+
+\newcommand\PlaceTextBlockHeader[4]{%
+\begin{textblock*}{\blockHeaderWidth-\blockPictureWidth}(#1,#2)  %% change width of box 
+\begin{center}
+\vspace{20pt}\textcolor{blockNameText}{\textbf{\blockHeaderFontSize{#3}\\\vspace{10pt}\blockHeaderFontSize{#4}}}
+\end{center}
+\end{textblock*}}%
+
+% --------- /blockHEADER Text
+
+% --------- blockSIDEBAR Text
+\newcommand\placecvLaTexBlockSideBar[3]{%
+\begin{textblock*}{\blockSideBarWidth-10mm}(#1,#2)  %% change width of box 
+    \begin{center}
+        \textcolor{blockSideBarText}{\cvLaTex}\\
+    \end{center}
+\end{textblock*}}%
+
+\newcommand\placeContactBlockSideBar[3]{%
+\begin{textblock*}{\blockSideBarWidth-10mm}(#1,#2)  %% change width of box 
+    \begin{center}
+        \textcolor{blockSideBarText}{\blockSideBarFontSizeTitle{\underline{Informations} \underline{Personnelles}}}\\
+    \end{center}
+    \icontext{\faMobile*}{12}{\hspace{#3}\phoneNumber}{blockSideBarText}\\[6pt]
+    \icontext{\faEnvelope[regular]}{12}{\hspace{#3}\email}{blockSideBarText}\\[6pt]
+    \icontext{\faMapMarker*}{12}{\hspace{#3}\physicalAddress}{blockSideBarText}\\[1pt]
+    \icontext{}{12}{\hspace{#3}\postalCode}{blockSideBarText}\\[6pt] 
+    \icontext{\faCar}{12}{\hspace{#3}\drivingLicense}{blockSideBarText}\\[6pt]
+\end{textblock*}}%
+
+\newcommand\placeTechnologiesBlockSideBar[3]{%
+\begin{textblock*}{\blockSideBarWidth-10mm}(#1,#2)  %% change width of box 
+    \begin{center}
+        \textcolor{blockSideBarText}{\blockSideBarFontSizeTitle{{\underline{Technologies}}}}\\
+    \end{center}
+    \icontext{\faCode}{12}{\hspace{#3}\frontLanguages}{blockSideBarText}\\[6pt]
+	\icontext{\faPython}{12}{\hspace{#3}\programingLanguages}{blockSideBarText}\\[6pt]
+    \icontext{\faDatabase}{12}{\hspace{#3}\sgbd}{blockSideBarText}\\[6pt] 
+	\icontext{\faGit*}{12}{\hspace{#3}\versionControlSystem}{blockSideBarText}\\[6pt] 
+	\icontext{\faGithub}{12}{\hspace{#3}\githubAdress}{blockSideBarText}\\[6pt]
+    \icontext{\faTools}{12}{\hspace{#3}\IDE}{blockSideBarText}\\[6pt]
+\end{textblock*}}%
+
+\newcommand\placeHardSkillsBlockSideBar[3]{%
+\begin{textblock*}{\blockSideBarWidth-10mm}(#1,#2)  %% change width of box 
+    \begin{center}
+        \textcolor{blockSideBarText}{\blockSideBarFontSizeTitle{\underline{HardSkills}}}\\
+    \end{center}
+    \hardSkills{\faAngleRight}{#3}
+\end{textblock*}}%
+
+\newcommand\placeSoftSkillsBlockSideBar[3]{%
+\begin{textblock*}{\blockSideBarWidth-10mm}(#1,#2)  %% change width of box 
+    \begin{center}
+        \textcolor{blockSideBarText}{\blockSideBarFontSizeTitle{\underline{SoftSkills}}}\\
+    \end{center}
+    \softSkills{\faAngleRight}{#3}
+\end{textblock*}}%
+
+\newcommand\placeInterestsBlockSideBar[3]{%
+\begin{textblock*}{\blockSideBarWidth-10mm}(#1,#2)  %% change width of box 
+    \begin{center}
+        \textcolor{blockSideBarText}{\blockSideBarFontSizeTitle{\underline{Intérêts}}}\\
+    \end{center}
+    \interests{\faTerminal}{#3}
+\end{textblock*}}%
+
+\newcommand\placeLanguagesBlockSideBar[3]{%
+\begin{textblock*}{\blockSideBarWidth-10mm}(#1,#2)  %% change width of box 
+    \begin{center}
+        \textcolor{blockSideBarText}{\blockSideBarFontSizeTitle{\underline{Langues}}}\\
+    \end{center}
+    \Languages{\faCommentDots}{#3}
+\end{textblock*}}%
+
+% --------- /blockSIDEBAR Text
+
+% ----------------- blockBody ( Title, Date, Content)
+
+% --------- blockMainTITLE Text
+\newcommand\placeTextBlockMainTitle[4]{%
+\begin{textblock*}{\blockTitleWidth}(
+\sideMargin*2+\blockNameWidth,
+#1+\blockNameHeight+\sideMargin)  
+
+\textcolor{blockTitleText}{\MakeUppercase{\textbf{#2}} \textit{#3}}
+    #4
+
+\end{textblock*}}%
+
+% --------- /blockMainTITLE Text
+
+% --------- blockTITLE Text
+\newcommand\placeTextBlockTitle[2]{%
+\begin{textblock*}{\blockTitleWidth}(
+\sideMargin*4+\blockNameWidth,
+#1+\blockNameHeight+\sideMargin)
+
+%\begin{flushleft}
+\textcolor{blockTitleText}{\Large{\underline{#2}}}
+%\end{flushleft}
+
+\end{textblock*}}%
+
+% --------- /blockTITLE Text
+
+% --------- blockDATE Text
+
+\newcommand\placeDateBlock[5]{%
+
+\begin{textblock*}{\blockDateWidth}(
+\sideMargin+\blockNameWidth,
+#1+\blockNameHeight+\sideMargin+\blockTitleHeight) 
+
+\textcolor{blockContentText}{
+\begin{center}
+\vspace{-#2}\hspace{#3}#4 \\ 
+\vspace{#2}\hspace{#3}- \\ 
+\vspace{#2}\hspace{#3}#5
+\end{center}}
+
+\end{textblock*}}%
+
+% --------- /blockDATE Text
+
+% --------- blockEXPPRO Text
+
+\newcommand{\placeTextBlockExpPro}[1]{
+
+\begin{textblock*}{\blockContentWidth}(
+\sideMargin*3+\blockNameWidth+\blockDateWidth,
+#1+\blockNameHeight+\sideMargin+\blockTitleHeight) 
+\expPro{}
+\end{textblock*}}%
+
+% --------- /blockEXPPRO Text
+
+% --------- blockFORMATION Text
+
+\newcommand{\placeTextBlockFormation}[1]{
+
+\begin{textblock*}{\blockContentWidth}(
+\sideMargin*3+\blockNameWidth+\blockDateWidth,
+#1+\blockNameHeight+\sideMargin+\blockTitleHeight)
+\formation{}
+\end{textblock*}}%}
+
+% --------- /blockFORMATION Text
+
+% --------- blockExpAsso Text
+
+\newcommand{\placeTextBlockExpAsso}[1]{
+
+\begin{textblock*}{\blockContentWidth}(
+\sideMargin*3+\blockNameWidth+\blockDateWidth,
+#1+\blockNameHeight+\sideMargin+\blockTitleHeight) 
+\expAsso{}
+\end{textblock*}}
+
+% --------- /blockExpAsso Text
+
+%--------------------- /Define, formatting blockText
+
+%-----------------------------------------------------------%
+%--------------------- Define Key Info ---------------------%
+%--------------------- --------------- ---------------------%
+
+%---------- blockName Info
+
+\newcommand{\firstName}{Name}
+\newcommand{\lastName}{FamilyName}
+\newcommand{\nationality}{Nationality}
+\newcommand{\age}{Age}
+
+%---------- /blockName Info
+
+%---------- blockSideBar Info
+
+\newcommand{\mainTitle}{cvTitle}
+\newcommand{\enterpriseName}{Company Name}
+\newcommand{\cvLaTex}{CV réalisé en \LaTeX}
+\newcommand{\email}{mail}
+\newcommand{\phoneNumber}{+phone number}
+\newcommand{\physicalAddress}{address}
+\newcommand{\postalCode}{code}
+\newcommand{\drivingLicense}{license}
+\newcommand{\websiteAddress}{www.test.fr}
+\newcommand{\githubAdress}{\href{github.address}{\underline{text}}}
+\newcommand{\frontLanguages}{HTML,CSS, Javascript}
+\newcommand{\programingLanguages}{Python, VBA}
+\newcommand{\sgbd}{MySQL}
+\newcommand{\versionControlSystem}{Git, GitHub}
+\newcommand{\IDE}{VSC, Pycharm}
+\newcommand{\software}{Microsoft Office}
+
+\newcommand{\Languages}[2]{
+\icontext{#1}{12}{\hspace{#2}Français (C1)}{blockSideBarText}\\ 
+\icontext{#1}{12}{\hspace{#2}Espagnol (B1)}{blockSideBarText}\\}
+
+\newcommand{\hardSkills}[2]{
+\icontext{#1}{12}{\hspace{#2}text}{blockSideBarText}\\ 
+\icontext{#1}{12}{\hspace{#2}text}{blockSideBarText}\\
+\icontext{#1}{12}{\hspace{#2}text}{blockSideBarText}\\
+\icontext{#1}{12}{\hspace{#2}text}{blockSideBarText}}
+
+\newcommand{\softSkills}[2]{
+\icontext{#1}{12}{\hspace{#2}text}{blockSideBarText}\\ 
+\icontext{#1}{12}{\hspace{#2}text}{blockSideBarText}\\
+\icontext{#1}{12}{\hspace{#2}text}{blockSideBarText}}
+
+\newcommand{\interests}[2]{
+\icontext{#1}{12}{\hspace{#2}text}{blockSideBarText}\\ 
+\icontext{#1}{12}{\hspace{#2}text}{blockSideBarText}\\
+\icontext{#1}{12}{\hspace{#2}text}{blockSideBarText}}
+
+\newcommand{\sports}{txt}
+
+%---------- /blockSideBar Info
+
+% -------------------- blockContent Info
+
+% --------- WordPress Text
+\newcommand{\ogcAddress}{\href{address/}{\underline{OGC.com}}}
+
+\newcommand{\wordPress}{
+    \begin{flushleft}
+    \vspace{-2mm}
+    \hspace{6mm}\fiveStarBar{starIconFull}{starIconFull}{starIconFull}{starIconFull}{starIconEmpty}\\
+    \vspace{2mm}
+    \hspace{6mm}\icontext{\faWordpress}{12}{\hspace{1mm}\ogcAddress \spacetxt}{blockContentText}\\
+    \hspace{6mm}\icontext{\faWordpress}{12}{\hspace{1mm}txt }{blockContentText}\\
+    \hspace{6mm}\icontext{\faWordpress}{12}{\hspace{1mm}txt}{blockContentText}
+    \end{flushleft}}
+% --------- /WordPress Text 
+
+% --------- PythonFlask Text
+\newcommand{\pythonFlask}{
+    \begin{flushleft}
+    \vspace{-2mm}
+    \hspace{6mm}\fiveStarBar{starIconFull}{starIconFull}{starIconEmpty}{starIconEmpty}{starIconEmpty}\\
+    \vspace{2mm}
+    \vspace{2mm}\hspace{6mm}\icontext{\faAngleRight}{12}{\hspace{1mm}Application de calcul d'impôts (Python3 et Flask).}{blockContentText}\\
+    \hspace{6mm}\icontext{\faAngleRight}{12}{\hspace{1mm}Fondamentaux Python3.}{blockContentText}\\
+    \hspace{6mm}\icontext{\faAngleRight}{12}{\hspace{1mm}Gestion BDD : MySQL, PostgreSQL, ORM SqlAlchemy.}{blockContentText}\\
+    \hspace{6mm}\icontext{\faAngleRight}{12}{\hspace{1mm}Programmation réseau TCP/IP.}{blockContentText}\\
+    \hspace{6mm}\icontext{\faAngleRight}{12}{\hspace{1mm}Programmation web MVC avec Flask.}{blockContentText}\\
+    \hspace{6mm}\icontext{\faAngleRight}{12}{\hspace{1mm}Architectures trois couches et programmation par interfaces.}{blockContentText}\\
+    \end{flushleft}}
+
+% --------- /PythonFlask Text
+
+% --------- VBA Text
+\newcommand{\vbaText}{
+    \begin{flushleft}
+     \vspace{-2mm}
+    \hspace{6mm}\fiveStarBar{starIconFull}{starIconFull}{starIconFull}{starIconEmpty}{starIconEmpty}\\
+    \vspace{2mm}
+    \hspace{6mm}\icontext{\faAngleRight}{12}{\hspace{1mm} Registre de transactions avec saisie de données via formulaires (ouverture / clôture).}{blockContentText}\\
+    \hspace{6mm}\icontext{\faAngleRight}{12}{\hspace{1mm}Script pour classer des données pour export en JSON}{blockContentText}\\
+    \hspace{6mm}\icontext{\faAngleRight}{12}{\hspace{1mm}Mise en forme, traitement et analyse de données, export vers powerpoint.}{blockContentText}\\
+    
+    \end{flushleft}}
+% --------- /VBA Text
+
+% --------- Expérience professionnelle Text
+
+\newcommand{\expPro}{
+\begin{flushleft}
+\textbf{txt \textit{work title}}, location, period\\
+\hspace{2mm}\icontext{\faAngleRight}{12}{\hspace{2mm}mission }{black}
+\vspace{3mm}\\
+\textbf{Enerfip, \textit{work title}}, location, period\\
+\hspace{2mm}\icontext{\faAngleRight}{12}{\hspace{2mm}txt }{black}
+\vspace{3mm}\\
+\textbf{Enerfip, \textit{work title}}, location, period\\
+\end{flushleft}}
+
+% -------------------- /Expérience professionnelle Text
+
+% -------------------- Formation Text
+
+\newcommand{\formation}{
+\begin{flushleft}
+\textbf{diploma rank  \textit{diploma title}}, \\location, period\vspace{2mm}\\
+\textbf{diploma rank  \textit{diploma title}}, \\location, period\vspace{2mm}\\
+\end{flushleft}}
+
+% -------------------- Expérience associative
+
+\newcommand{\expAsso}{
+\hspace{-5mm}\textbf{name, \textit{role}} period\vspace{2mm}\\
+job done, metrics, other data\\
+}
+
+% -------------------- /blockContent Info
+
+%-----------------------------------------------------------%
+%--------------------- /Define Key Info --------------------%
+%--------------------- --------------- ---------------------%
+
+%----------------------------------------------------------%
+%--------------------- Begin Document ---------------------%
+%--------------------- -------------- ---------------------%
+
+\begin{document}
+
+%--------------------- blockStructure ---------------------%
+
+\begin{tikzpicture}[remember picture,overlay]
+
+\placeblockName % --- blockName
+\placeblockHeader % --- blockHeader
+\placeblockPicture{portrait.png} % --- blockPicture
+\placeblockSideBar % --- blockSideBar
+\placeblockMain % --- blockMain
+
+\end{tikzpicture}
+
+%--------------------- /blockStructure ----------------------%
+
+% ----------------- blockContent ---------------------------%
+
+% ----------------- sideBarContent ------------------------%
+%--------------------- -------------- ---------------------%
+
+\PlaceTextBlockHeader{\blockNameWidth-2mm}{-3mm}{\mainTitle}{\enterpriseName}
+\PlaceTextBlockName{7mm}{4mm}{\firstName}{\lastName}{\nationality}{\age}
+
+\placecvLaTexBlockSideBar{\sideMargin+7mm}{\blockNameHeight+0.3cm}{3mm}
+\placeContactBlockSideBar{\sideMargin+7mm}{\blockNameHeight+1.4cm}{3mm}
+\placeTechnologiesBlockSideBar{\sideMargin+7mm}{\blockNameHeight+6.4cm}{3mm}
+\placeHardSkillsBlockSideBar{\sideMargin+7mm}{\blockNameHeight+11.9cm}{3mm}
+\placeSoftSkillsBlockSideBar{\sideMargin+7mm}{\blockNameHeight+15.4cm}{3mm}
+\placeInterestsBlockSideBar{\sideMargin+7mm}{\blockNameHeight+18.4cm}{3mm}
+\placeLanguagesBlockSideBar{\sideMargin+7mm}{\blockNameHeight+21.4cm}{3mm}
+
+%--------------------- blockContent ----------------------%
+
+% -------------------- mainBlockContent
+\placeTextBlockMainTitle{5mm}{WordPress}{Elementor, WPBakery, WooCommerce ...}{\wordPress} % text of title
+\placeTextBlockMainTitle{40mm}{Python}{Python3 et Flask}{\pythonFlask} % text of title
+\placeTextBlockMainTitle{85mm}{Visual Basic Application}{Macro et optimisations de process}{\vbaText} % text of title
+
+% -------------------- /mainBlockContent
+% -------------------- Expériences pro
+
+\newcommand{\expproHeight}{120mm} % Define initial height
+\placeblockTitle{\expproHeight}    % background of title
+\placeTextBlockTitle{\expproHeight+8mm}{Expériences professionnelles} % text of title
+\placeDateBlock{\expproHeight+12mm}{6mm}{5mm}{2021}{2017} % date with position and content
+\placeTextBlockExpPro{\expproHeight+2mm} % content of exp pro
+\placeVerticalRule{70mm}{-\expproHeight-45mm}{70.5mm}{-\expproHeight-83mm} % vertical rule 
+
+% -------------------- /Expériences pro
+
+% -------------------- Formations
+
+\newcommand{\formationHeight}{165mm}
+\placeblockTitle{\formationHeight}
+\placeTextBlockTitle{\formationHeight+16mm}{Formation}
+\placeDateBlock{\formationHeight+15mm}{4mm}{5mm}{2020}{2011}
+\placeTextBlockFormation{\formationHeight+10mm}
+\placeVerticalRule{70mm}{-\formationHeight-45mm}{70.5mm}{-\formationHeight-73mm}
+
+% -------------------- /Formations
+
+% -------------------- Expérience associative
+
+\newcommand{\expAssoHeight}{200mm}
+\placeblockTitle{\expAssoHeight}
+\placeTextBlockTitle{\expAssoHeight+25mm}{Expérience Associative}
+\placeDateBlock{\expAssoHeight+19mm}{2mm}{5mm}{2022}{2016}
+\placeTextBlockExpAsso{\expAssoHeight+21mm}
+\placeVerticalRule{70mm}{-\expAssoHeight-45mm}{70.5mm}{-\expAssoHeight-67mm}
+
+% ----------------- /blockContent ---------------------------%
+
+\placestarBackground{starBackground}{15mm}{50mm}{95mm}
+\end{document}
